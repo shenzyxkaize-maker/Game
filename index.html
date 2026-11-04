@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#060a0f" />
+  <title>STILL ALIVE — An Interactive True Story of the Andes</title>
+  <meta name="description" content="Forty-five people boarded Flight 571. Sixteen came home. An interactive true story of the 1972 Andes flight disaster." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23060a0f'/%3E%3Cpath d='M3 24 L12 11 L18 19 L22 14 L29 24 Z' fill='%23a9cfe2'/%3E%3C/svg%3E" />
+  <link rel="preload" href="assets/fonts/cormorant-garamond-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/spectral-normal-2.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true">
+    <div class="moon"></div>
+    <svg class="mountains" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <defs>
+        <linearGradient id="skyFade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0b1926" stop-opacity="0" />
+          <stop offset="1" stop-color="#050a0f" stop-opacity=".9" />
+        </linearGradient>
+        <linearGradient id="farRidge" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#243746" stop-opacity=".7" />
+          <stop offset="1" stop-color="#101c26" stop-opacity=".2" />
+        </linearGradient>
+        <linearGradient id="midRidge" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#152431" />
+          <stop offset="1" stop-color="#0a131b" />
+        </linearGradient>
+        <linearGradient id="nearRidge" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0a1118" />
+          <stop offset="1" stop-color="#05080c" />
+        </linearGradient>
+        <linearGradient id="snowLine" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#b8d4e4" stop-opacity="0" />
+          <stop offset=".5" stop-color="#b8d4e4" stop-opacity=".4" />
+          <stop offset="1" stop-color="#b8d4e4" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+      <rect width="1440" height="900" fill="url(#skyFade)" />
+      <path d="M0 515 L90 455 L168 493 L250 386 L326 452 L410 402 L500 470 L586 420 L676 478 L760 430 L850 486 L936 410 L1020 472 L1108 440 L1200 496 L1290 434 L1372 488 L1440 450 L1440 900 L0 900 Z" fill="url(#farRidge)" opacity=".55" />
+      <path d="M0 610 L80 552 L150 578 L238 468 L318 540 L398 492 L470 558 L560 505 L636 566 L724 520 L806 580 L892 500 L980 566 L1064 526 L1150 590 L1238 540 L1320 596 L1400 552 L1440 578 L1440 900 L0 900 Z" fill="url(#midRidge)" opacity=".9" />
+      <path d="M0 705 L96 646 L178 678 L262 592 L342 654 L428 612 L508 690 L596 636 L686 706 L774 656 L862 716 L948 642 L1036 704 L1122 660 L1212 724 L1300 668 L1386 712 L1440 688 L1440 900 L0 900 Z" fill="url(#nearRidge)" />
+      <path d="M238 468 L262 592 M892 500 L948 642 M596 470 L560 505" stroke="#c9e1ef" stroke-opacity=".12" stroke-width="1.3" />
+      <path d="M0 790 L120 738 L230 768 L336 710 L440 760 L548 720 L660 776 L770 728 L884 780 L996 724 L1110 774 L1224 730 L1340 780 L1440 744" fill="none" stroke="url(#snowLine)" stroke-width="1.2" opacity=".5" />
+    </svg>
+    <canvas id="snow" aria-hidden="true"></canvas>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <main id="app">
+    <!-- ================= TITLE ================= -->
+    <section id="screen-title" class="screen screen-title is-active">
+      <div class="title-top">
+        <span class="micro-label">An interactive true story</span>
+        <span class="micro-label coordinates">34°45′ S&nbsp;&nbsp;·&nbsp;&nbsp;70°17′ W</span>
+      </div>
+
+      <div class="title-core">
+        <p class="title-kicker">The Andes&nbsp;&nbsp;·&nbsp;&nbsp;1972</p>
+        <h1 class="title-wordmark"><span>STILL</span><span class="title-alive">ALIVE</span></h1>
+        <div class="title-rule" aria-hidden="true"></div>
+        <p class="title-deck">Forty-five people boarded Flight&nbsp;571.<br />Sixteen came home.</p>
+        <p class="title-lede">You are Nando Parrado. You are twenty-three years old. In three hours, your life will end and begin at the same time.</p>
+        <div class="title-actions">
+          <button id="btn-start" class="btn btn-primary" type="button">
+            <span>Begin the descent</span><span class="btn-arrow" aria-hidden="true">→</span>
+          </button>
+          <button id="btn-continue" class="btn btn-ghost is-hidden" type="button">Continue saved story</button>
+        </div>
+      </div>
+
+      <div class="title-bottom">
+        <p class="content-advisory"><strong>Content note.</strong> This story depicts a real plane crash, death, grief, and survival cannibalism. Recommended for ages 14+. There is no graphic imagery.</p>
+        <p class="title-credit">Based on published accounts of Uruguayan Air Force Flight 571. A work of interactive historical fiction. <span class="title-duration">≈ 20 minutes</span></p>
+      </div>
+    </section>
+
+    <!-- ================= GAME ================= -->
+    <section id="screen-game" class="screen screen-game" hidden>
+      <header class="topbar">
+        <a class="brand" href="#" id="brand-home" aria-label="Still Alive, return to title">
+          <span class="brand-mark" aria-hidden="true">✦</span>
+          <span class="brand-name">STILL ALIVE</span>
+          <span class="brand-year">1972</span>
+        </a>
+        <div class="topbar-actions">
+          <button id="btn-sound" class="top-btn" type="button" aria-pressed="false" title="Toggle ambient sound (M)">
+            <span class="sound-icon" aria-hidden="true">◌</span><span class="top-btn-label">Sound off</span>
+          </button>
+          <button id="btn-journal" class="top-btn" type="button" title="Open field notes (J)">
+            <span class="journal-icon" aria-hidden="true">▤</span><span class="top-btn-label">Field notes</span><span id="note-count" class="note-count">0</span>
+          </button>
+          <button id="btn-restart" class="top-btn top-btn-quiet" type="button" title="Restart the story">Restart</button>
+        </div>
+      </header>
+
+      <div class="game-grid">
+        <aside class="hud" aria-label="Survival status">
+          <div class="hud-block hud-when">
+            <div class="hud-day" id="hud-day">Day 0</div>
+            <div class="hud-date" id="hud-date">12 October 1972</div>
+          </div>
+
+          <div class="hud-block hud-where">
+            <div class="hud-location" id="hud-location">Montevideo, Uruguay</div>
+            <div class="hud-altitude" id="hud-altitude">Sea level</div>
+          </div>
+
+          <div class="hud-block hud-stats">
+            <div class="stat" data-stat="warmth">
+              <div class="stat-head"><span class="stat-name">Warmth</span><span class="stat-val" id="stat-warmth">55</span></div>
+              <div class="stat-track"><div class="stat-fill" id="bar-warmth"></div><div class="stat-ticks" aria-hidden="true"></div></div>
+            </div>
+            <div class="stat" data-stat="strength">
+              <div class="stat-head"><span class="stat-name">Strength</span><span class="stat-val" id="stat-strength">60</span></div>
+              <div class="stat-track"><div class="stat-fill" id="bar-strength"></div><div class="stat-ticks" aria-hidden="true"></div></div>
+            </div>
+            <div class="stat" data-stat="hope">
+              <div class="stat-head"><span class="stat-name">Hope</span><span class="stat-val" id="stat-hope">55</span></div>
+              <div class="stat-track"><div class="stat-fill" id="bar-hope"></div><div class="stat-ticks" aria-hidden="true"></div></div>
+            </div>
+            <div class="stat stat-food is-hidden" id="food-stat">
+              <div class="stat-head"><span class="stat-name">Rations</span><span class="stat-val"><span id="stat-food">3</span> days</span></div>
+              <div class="stat-track stat-track-food"><div class="stat-fill" id="bar-food"></div></div>
+            </div>
+          </div>
+
+          <div class="hud-block hud-people">
+            <div class="alive-row"><span class="alive-number" id="hud-alive">45</span><span class="alive-label">still alive<br /><span class="alive-of">of 45 aboard</span></span></div>
+            <div class="alive-pips" id="alive-pips" aria-hidden="true"></div>
+          </div>
+
+          <div class="hud-block hud-carrying">
+            <h2 class="hud-heading">Carrying</h2>
+            <ul id="inventory" class="inventory"><li>A boarding pass</li></ul>
+          </div>
+
+          <p class="hud-shortcuts" aria-hidden="true">1–9 choose &nbsp;·&nbsp; J notes &nbsp;·&nbsp; M sound</p>
+        </aside>
+
+        <div class="stage-wrap">
+          <article class="stage" id="stage" aria-live="polite">
+            <header class="scene-head">
+              <p class="scene-act" id="scene-act">Act I · The White Silence</p>
+              <h2 class="scene-title" id="scene-title" tabindex="-1">The Last Ordinary Morning</h2>
+            </header>
+            <div class="prose" id="prose"></div>
+            <div class="field-note-callout is-hidden" id="field-note-callout">
+              <button class="note-callout-btn" id="note-callout-btn" type="button">
+                <span class="note-callout-kicker">Field note recovered</span>
+                <span class="note-callout-title" id="note-callout-title"></span>
+                <span class="note-callout-arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+            <div class="choices" id="choices"></div>
+          </article>
+
+          <footer class="stage-footer">
+            <span class="act-progress" id="act-progress">Act I of V</span>
+            <span class="progress-rule" aria-hidden="true"><i id="progress-fill"></i></span>
+            <span class="chapter-count" id="chapter-count">The mountain</span>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ENDING ================= -->
+    <section id="screen-ending" class="screen screen-ending" hidden>
+      <div class="ending-wrap">
+        <p class="ending-kicker">23 December 1972 &nbsp;·&nbsp; Day 72</p>
+        <h1 class="ending-title">SIXTEEN</h1>
+        <p class="ending-sub">Out of forty-five, sixteen came home.</p>
+
+        <div class="ending-stat-grid">
+          <div class="ending-stat"><span class="ending-stat-num">72</span><span class="ending-stat-label">days on the mountain</span></div>
+          <div class="ending-stat"><span class="ending-stat-num">3,660</span><span class="ending-stat-label">metres above the sea</span></div>
+          <div class="ending-stat"><span class="ending-stat-num">29</span><span class="ending-stat-label">did not come home</span></div>
+        </div>
+
+        <div class="ending-prose" id="ending-prose"></div>
+
+        <div class="ending-section">
+          <h2>Your path</h2>
+          <ul class="path-list" id="path-list"></ul>
+        </div>
+
+        <div class="ending-section">
+          <h2>What happened next</h2>
+          <div class="ending-prose ending-history" id="ending-history"></div>
+        </div>
+
+        <div class="ending-section">
+          <h2>Those who came home</h2>
+          <ul class="survivor-list" id="survivor-list"></ul>
+        </div>
+
+        <div class="ending-section">
+          <h2>The twenty-nine</h2>
+          <ul class="survivor-list lost-list" id="lost-list"></ul>
+          <p class="lost-note">Their names are carried by the sixteen.</p>
+        </div>
+
+        <p class="ending-dedication">For the twenty-nine who stayed on the mountain.<br /><span>You are not forgotten.</span></p>
+
+        <div class="ending-section ending-sources">
+          <h2>Sources &amp; a note on this story</h2>
+          <p>This is a work of interactive historical fiction. The dates, places, and central events follow published accounts, including Nando Parrado's <em>Miracle in the Andes</em> (2006) and Piers Paul Read's <em>Alive</em> (1974). Some conversations and inner thoughts are dramatized. Where the historical record is uncertain, the story follows the survivors' testimony.</p>
+          <p class="sources-line">Further reading: <em>Miracle in the Andes</em> · <em>Alive: The Story of the Andes Survivors</em> · “Uruguayan Air Force Flight 571,” Wikipedia · <em>Society of the Snow</em> (2023).</p>
+        </div>
+
+        <div class="ending-actions">
+          <button id="btn-ending-notes" class="btn btn-primary" type="button"><span>Read the field notes</span><span class="btn-arrow" aria-hidden="true">→</span></button>
+          <button id="btn-ending-replay" class="btn btn-ghost" type="button">Walk it again</button>
+          <button id="btn-ending-title" class="btn btn-quiet" type="button">Return to title</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= DEATH ================= -->
+    <section id="screen-death" class="screen screen-death" hidden>
+      <div class="death-wrap">
+        <p class="death-kicker">The mountain keeps its own</p>
+        <h1 class="death-title">YOU DO NOT<br />COME DOWN</h1>
+        <div class="death-prose" id="death-prose"></div>
+        <div class="death-history" id="death-history"></div>
+        <div class="death-actions">
+          <button id="btn-rewind" class="btn btn-primary" type="button"><span>Rewind to the last decision</span><span class="btn-arrow" aria-hidden="true">↺</span></button>
+          <button id="btn-death-restart" class="btn btn-ghost" type="button">Start over</button>
+        </div>
+        <p class="death-footnote">This is one possible story. It is not what happened.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= CHAPTER CARD ================= -->
+  <div class="chapter-card" id="chapter-card" hidden aria-hidden="true">
+    <span class="chapter-numeral" id="chapter-numeral">I</span>
+    <div class="chapter-inner">
+      <p class="chapter-kicker" id="chapter-kicker">Act I</p>
+      <h2 class="chapter-title" id="chapter-title">The White Silence</h2>
+      <div class="chapter-rule" aria-hidden="true"></div>
+      <p class="chapter-range" id="chapter-range">13 – 23 October 1972</p>
+      <p class="chapter-epigraph" id="chapter-epigraph"></p>
+      <p class="chapter-skip">Click to continue</p>
+    </div>
+  </div>
+
+  <!-- ================= FIELD NOTES DRAWER ================= -->
+  <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+  <aside class="drawer" id="drawer" aria-labelledby="drawer-title" aria-hidden="true">
+    <header class="drawer-head">
+      <div>
+        <p class="drawer-kicker">What really happened</p>
+        <h2 class="drawer-title" id="drawer-title">Field notes</h2>
+      </div>
+      <button id="btn-drawer-close" class="icon-btn" type="button" aria-label="Close field notes">✕</button>
+    </header>
+    <p class="drawer-intro">The mountain is not a metaphor. These are the facts behind the story, recovered as you walk.</p>
+    <p class="drawer-progress"><span id="drawer-progress-text">0 of 10 recovered</span></p>
+    <div class="notes-list" id="notes-list"></div>
+    <footer class="drawer-foot">
+      <p><strong>A note on the record.</strong> Dates and events follow the survivors' testimony and published histories. Some dialogue is dramatized. This story does not depict the details of survival cannibalism; it depicts the decision, which the survivors have described as an act of love and necessity.</p>
+      <p class="sources-line">Sources: Parrado, <em>Miracle in the Andes</em> (2006); Read, <em>Alive</em> (1974); “Uruguayan Air Force Flight 571,” Wikipedia.</p>
+    </footer>
+  </aside>
+
+  <!-- ================= CONFIRM ================= -->
+  <div class="modal" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title" hidden>
+    <div class="modal-card">
+      <p class="modal-kicker">Leave the mountain?</p>
+      <h2 id="confirm-title">Start the story over?</h2>
+      <p>Your current progress will be lost. The field notes you have recovered will be kept.</p>
+      <div class="modal-actions">
+        <button id="btn-confirm-yes" class="btn btn-primary" type="button">Yes, start over</button>
+        <button id="btn-confirm-no" class="btn btn-ghost" type="button">Keep walking</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="js/game.js"></script>
+</body>
+</html>
